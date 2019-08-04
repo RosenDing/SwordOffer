@@ -1,0 +1,57 @@
+# -*- coding:utf-8 -*-
+class Solution:
+    """
+    表示数值的字符串
+    1. 数值遵循模式：A[.[B]][e|EC]
+    """
+    # s字符串
+    def isNumeric(self, s):
+        # write code here
+        if s == '':
+            return False
+        s_len = len(s)
+        # 扫描小数点前的A
+        is_number, s_index = self.scan_integer(s, 0)
+
+        if s_index < s_len and s[s_index] == '.':
+            s_index += 1
+            is_tmp_number, s_index = self.scan_unsign_integer(s, s_index)
+            # 小数点前后都可以没有数字
+            is_number = is_tmp_number | is_number
+
+        if s_index < s_len and s[s_index] in ['e', 'E']:
+            s_index += 1
+            is_tmp_number, s_index = self.scan_integer(s, s_index)
+            # e前后必须有数字
+            is_number = is_tmp_number & is_number
+
+        if s_index == s_len:
+            return is_number
+        else:
+            return False
+
+    def scan_unsign_integer(self, s, s_index):
+        if s_index == len(s):
+            return False, s_index
+        old_index = s_index
+        s_len = len(s)
+        while s_index < s_len and s[s_index] >= '0' and s[s_index] <= '9':
+            s_index += 1
+
+        if s_index > old_index:
+            return True, s_index
+        else:
+            return False, s_index
+
+    def scan_integer(self, s, s_index):
+        if s_index == len(s):
+            return False, s_index
+        if s[s_index] == '+' or s[s_index] == '-':
+            s_index += 1
+        return self.scan_unsign_integer(s, s_index)
+
+if __name__ == '__main__':
+    solution = Solution()
+    s = '12e'
+    result = solution.isNumeric(s)
+    print result
