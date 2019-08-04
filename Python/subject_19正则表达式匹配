@@ -1,0 +1,43 @@
+# -*- coding:utf-8 -*-
+class Solution:
+    """
+    正则表达式匹配
+    1.需要判断当前字符的下一个字符是否是'*'的情况
+    2.递归注意考虑全情况
+    if next pattern is *:
+        if current pattern == current str(or have '.'):
+            return 匹配一次，str和pattern各往后移 | 匹配多次，只有str往后移 | 匹配0次，只有pattern往后移
+        else：
+            return 没有匹配，只有pattern往后移
+    if current pattern == current str(or have '.'):
+        return 匹配一次，str和pattern各往后移
+    """
+    # s, pattern都是字符串
+    def match(self, s, pattern):
+        # write code here
+        if s == '' and pattern == '':
+            return True
+        return self.match_core(s, 0, pattern, 0)
+
+    def match_core(self, s, s_index, pattern, pattern_index):
+        if s_index >= len(s) and pattern_index >= len(pattern):
+            return True
+        if s_index < len(s) and pattern_index >= len(pattern):
+            return False
+
+        if pattern_index + 1 < len(pattern) and pattern[pattern_index + 1] == '*':
+            if (s_index < len(s) and s[s_index] == pattern[pattern_index]) or (pattern[pattern_index] == '.' and s_index < len(s)):
+                return self.match_core(s, s_index+1, pattern, pattern_index+2) | self.match_core(s, s_index+1, pattern, pattern_index) | self.match_core(s, s_index, pattern, pattern_index+2)
+            else:
+                return self.match_core(s, s_index, pattern, pattern_index+2)
+        if (s_index < len(s) and s[s_index] == pattern[pattern_index]) or (pattern[pattern_index] == '.' and s_index < len(s)):
+            return self.match_core(s, s_index+1, pattern, pattern_index+1)
+
+        return False
+
+if __name__ == '__main__':
+    solution = Solution()
+    s = 'aaa'
+    pattern = 'a.a'
+    result = solution.match(s, pattern)
+    print result
