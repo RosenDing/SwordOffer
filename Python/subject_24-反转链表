@@ -1,0 +1,53 @@
+# -*- coding:utf-8 -*-
+class ListNode:
+    def __init__(self, x):
+        self.val = x
+        self.next = None
+
+class Solution:
+    # 返回ListNode
+    """
+    反转链表
+    """
+    def ReverseList(self, pHead):
+        # write code here
+        if pHead is None:
+            return None
+
+        left_point = pHead
+        mid_point = pHead.next
+        if mid_point is None:
+            return pHead
+        right_point = mid_point.next
+        if right_point is None:
+            mid_point.next = pHead
+            pHead.next = None
+            return mid_point
+
+        while right_point is not None:
+            if left_point == pHead:
+                left_point.next = None
+            mid_point.next = left_point
+            left_point = mid_point
+            mid_point = right_point
+            right_point = right_point.next
+        mid_point.next = left_point
+        return mid_point
+
+if __name__ == '__main__':
+    solution = Solution()
+    node_01 = ListNode(1)
+    node_02 = ListNode(2)
+    node_03 = ListNode(3)
+    node_04 = ListNode(4)
+
+    node_01.next = node_02
+    node_02.next = node_03
+    node_03.next = node_04
+
+    result_list = solution.ReverseList(node_01)
+
+    while result_list is not None:
+        print result_list.val
+        result_list = result_list.next
+
