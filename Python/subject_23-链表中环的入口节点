@@ -1,0 +1,65 @@
+# -*- coding:utf-8 -*-
+class ListNode:
+    def __init__(self, x):
+        self.val = x
+        self.next = None
+
+class Solution:
+    """
+    链表中环的入口节点
+    1。判断是否环
+    2。取环的入口节点
+    """
+    def EntryNodeOfLoop(self, pHead):
+        # write code here
+        if pHead is None:
+            return None
+        # 判断是否是环
+        pre_point = pHead
+        last_point = pHead
+        pre_point = pre_point.next
+        if pre_point is None:
+            return None
+        pre_point = pre_point.next
+        while last_point != pre_point:
+            if last_point is None or pre_point is None:
+                return None
+            pre_point = pre_point.next
+            last_point = last_point.next
+            if pre_point is None:
+                return None
+            pre_point = pre_point.next
+        ring_len = 1
+        pre_point = pre_point.next
+        while pre_point != last_point:
+            pre_point = pre_point.next
+            ring_len += 1
+
+        right_point = pHead
+        left_point = pHead
+        for i in range(ring_len):
+            right_point = right_point.next
+
+        while left_point != right_point:
+            left_point = left_point.next
+            right_point = right_point.next
+
+        return left_point
+
+
+if __name__ == '__main__':
+    solution = Solution()
+    node_01 = ListNode(1)
+    node_02 = ListNode(2)
+    node_03 = ListNode(3)
+    node_04 = ListNode(4)
+    node_05 = ListNode(5)
+
+    node_01.next = node_02
+    node_02.next = node_03
+    node_03.next = node_04
+    node_04.next = node_05
+    node_05.next = node_03
+
+    result_node = solution.EntryNodeOfLoop(node_01)
+    print result_node.val
