@@ -1,0 +1,31 @@
+# -*- coding:utf-8 -*-
+class TreeNode:
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+class Solution:
+    """
+    对称的二叉树
+    """
+    def isSymmetrical(self, pRoot):
+        # write code here
+        if pRoot is None:
+            return True
+        return self.is_symmertical(pRoot.left, pRoot.right)
+
+    def is_symmertical(self, p1, p2):
+        if p1 is None and p2 is None:
+            return True
+
+        if p1 is None or p2 is None:
+            return False
+
+        if p1.val != p2.val:
+            return False
+
+        return self.is_symmertical(p1.left, p2.right) and self.is_symmertical(p1.right, p2.left)
+
+
+if __name__ == '__main__':
+    solution = Solution()
