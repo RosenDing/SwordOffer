@@ -1,0 +1,48 @@
+# -*- coding:utf-8 -*-
+from collections import deque
+class Solution:
+    """
+    包含min函数的栈
+    """
+    def __init__(self):
+        self.stack = deque()
+        self.min_stack = deque()
+
+    def push(self, node):
+        # write code here
+        if len(self.min_stack) == 0:
+            self.min_stack.append(node)
+        else:
+            min = self.min_stack.pop()
+            self.min_stack.append(min)
+            if node < min:
+                self.min_stack.append(node)
+            else:
+                self.min_stack.append(min)
+        self.stack.append(node)
+
+    def pop(self):
+        # write code here
+        self.stack.pop()
+        self.min_stack.pop()
+
+    def top(self):
+        # write code here
+        result = self.stack.pop()
+        self.stack.append(result)
+        return result
+
+    def min(self):
+        # write code here
+        result = self.min_stack.pop()
+        self.min_stack.append(result)
+        return result
+
+if __name__ == '__main__':
+    solution = Solution()
+    solution.push(2)
+    solution.push(3)
+    solution.push(1)
+    solution.push(4)
+    print 'min=', solution.min()
+    print 'top=', solution.top()
