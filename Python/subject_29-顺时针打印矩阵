@@ -1,0 +1,37 @@
+# -*- coding:utf-8 -*-
+class Solution:
+    """
+    顺时针打印矩阵
+    """
+    # matrix类型为二维列表，需要返回列表
+    def printMatrix(self, matrix):
+        # write code here
+        rows = len(matrix)
+        if rows == 0:
+            return []
+        cols = len(matrix[0])
+        result_list = []
+        index = 0
+        while cols > 2*index and rows > 2*index:
+            for i in range(index, cols-1-index+1):
+                result_list.append(matrix[index][i])
+            if rows-1-index > index:
+                for i in range(index+1, rows-1-index+1):
+                    result_list.append(matrix[i][cols-1-index])
+            if rows-1-index > index and cols-1-index > index:
+                for i in range(cols-1-index-1, index-1, -1):
+                    result_list.append(matrix[rows-1-index][i])
+            if rows-1-index > index+1 and cols-1-index > index:
+                for i in range(rows-1-index-1, index+1-1, -1):
+                    result_list.append(matrix[i][index])
+            index += 1
+        return result_list
+
+if __name__ == '__main__':
+    solution = Solution()
+    # test_list = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
+    # test_list = [[1]]
+    # test_list = [[1], [2], [3], [4], [5]]
+    test_list = [[1, 2], [3, 4], [5, 6], [7, 8], [9, 10]]
+    result_list = solution.printMatrix(test_list)
+    print result_list
