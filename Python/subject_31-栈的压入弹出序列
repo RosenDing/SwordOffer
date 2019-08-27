@@ -1,0 +1,58 @@
+# -*- coding:utf-8 -*-
+from collections import deque
+class Solution:
+    """
+    栈的压入、弹出序列
+    """
+    def IsPopOrder(self, pushV, popV):
+        # write code here
+        tmp_stack = deque()
+        len_push = len(pushV)
+        len_pop = len(popV)
+
+        if len_pop == 0 and len_push == 0:
+            return True
+        elif len_pop != len_push:
+            return False
+        push_index = 0
+        pop_index = 0
+        while push_index < len_push and pop_index < len_pop:
+            push_value = pushV[push_index]
+            pop_value = popV[pop_index]
+            if push_value == pop_value:
+                push_index += 1
+                pop_index += 1
+            else:
+                if len(tmp_stack) > 0:
+                    top_value = tmp_stack.pop()
+                    if top_value == pop_value:
+                        pop_index += 1
+                        continue
+                    else:
+                        tmp_stack.append(top_value)
+                tmp_stack.append(push_value)
+                push_index += 1
+
+        if push_index == pop_index:
+            return True
+        if push_index < pop_index:
+            return False
+        while pop_index < len_pop:
+            pop_value = popV[pop_index]
+            if len(tmp_stack) > 0:
+                top_value = tmp_stack.pop()
+                if top_value == pop_value:
+                    pop_index += 1
+                else:
+                    return False
+            else:
+                return False
+        return True
+
+if __name__ == '__main__':
+    solution = Solution()
+    push_list = [1, 2, 3, 4, 5]
+    # pop_list = [4, 5, 3, 2, 1]
+    pop_list = [4, 3, 5, 1, 2]
+    result = solution.IsPopOrder(push_list, pop_list)
+    print result
