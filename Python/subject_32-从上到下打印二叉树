@@ -1,0 +1,48 @@
+# -*- coding:utf-8 -*-
+from collections import deque
+class TreeNode:
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+class Solution:
+    """
+    从上到下打印二叉树
+    """
+    # 返回从上到下每个节点值列表，例：[1,2,3]
+    def PrintFromTopToBottom(self, root):
+        # write code here
+        result_list = []
+        if root is None:
+            return result_list
+        my_queue = deque()
+        my_queue.append(root)
+        while len(my_queue) > 0:
+            current_root = my_queue.popleft()
+            result_list.append(current_root.val)
+            if current_root.left is not None:
+                my_queue.append(current_root.left)
+            if current_root.right is not None:
+                my_queue.append(current_root.right)
+        return result_list
+
+if __name__ == '__main__':
+    solution = Solution()
+    node_01 = TreeNode(8)
+    node_02 = TreeNode(6)
+    node_03 = TreeNode(10)
+    node_04 = TreeNode(5)
+    node_05 = TreeNode(7)
+    node_06 = TreeNode(9)
+    node_07 = TreeNode(11)
+    node_01.left = node_02
+    node_01.right = node_03
+    node_02.left = node_04
+    node_02.right = node_05
+    node_03.left = node_06
+    node_03.right = node_07
+
+    result_list = solution.PrintFromTopToBottom(node_01)
+    print result_list
+
+
