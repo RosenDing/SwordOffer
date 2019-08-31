@@ -1,0 +1,42 @@
+# -*- coding:utf-8 -*-
+class Solution:
+    """
+    二叉搜索树的后序遍历序列
+    """
+    def VerifySquenceOfBST(self, sequence):
+        # write code here
+        len_seq = len(sequence)
+        if len_seq == 0:
+            return False
+        result = self.verify(0, len_seq-1, sequence)
+        return result
+
+    def verify(self, start, end, data_list):
+        index_start = start
+        index_end = end
+        root_value = data_list[index_end]
+        end -= 1
+        while index_start < index_end:
+            if data_list[index_start] > root_value:
+                break
+            index_start += 1
+        middle = index_start
+        while index_start < index_end:
+            if data_list[index_start] < root_value:
+                return False
+            index_start += 1
+
+        is_left = True
+        if middle > start:
+            is_left = self.verify(start, middle-1, data_list)
+        is_right = True
+        if end-1 > middle:
+            is_right = self.verify(middle, end-1, data_list)
+        return is_left and is_right
+
+if __name__ == '__main__':
+    solution = Solution()
+    test = [5, 7, 6, 9, 11, 10, 8]
+    test = [7, 4, 6, 5]
+    result = solution.VerifySquenceOfBST(test)
+    print result
