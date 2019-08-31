@@ -1,0 +1,61 @@
+# -*- coding:utf-8 -*-
+from collections import deque
+class TreeNode:
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+class Solution:
+    """
+    按之字形打印二叉树
+    """
+    def Print(self, pRoot):
+        # write code here
+        result_list = []
+        queue_list = []
+        if pRoot is None:
+            return []
+        my_queue = deque()
+        my_queue.append(pRoot)
+        while len(my_queue) > 0:
+            new_queue = deque()
+            tmp_queue = deque()
+            while len(my_queue) > 0:
+                current_value = my_queue.popleft()
+                if current_value.left is not None:
+                    new_queue.append(current_value.left)
+                if current_value.right is not None:
+                    new_queue.append(current_value.right)
+                tmp_queue.append(current_value)
+            queue_list.append(tmp_queue)
+            my_queue = new_queue
+        for index, tmp_q in enumerate(queue_list):
+            flag = index % 2
+            tmp_list = []
+            while len(tmp_q) > 0:
+                if flag == 0:
+                    value = tmp_q.popleft()
+                else:
+                    value = tmp_q.pop()
+                tmp_list.append(value.val)
+            result_list.append(tmp_list)
+        return result_list
+
+if __name__ == '__main__':
+    solution = Solution()
+    node_01 = TreeNode(1)
+    node_02 = TreeNode(2)
+    node_03 = TreeNode(3)
+    node_04 = TreeNode(4)
+    node_05 = TreeNode(5)
+    node_06 = TreeNode(6)
+    node_07 = TreeNode(7)
+    node_01.left = node_02
+    node_01.right = node_03
+    node_02.left = node_04
+    node_02.right = node_05
+    node_03.left = node_06
+    node_03.right = node_07
+
+    result = solution.Print(node_01)
+    print result
